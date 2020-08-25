@@ -7,12 +7,14 @@ progress-player 使用 React Hooks 和 typescript 开发 实现时间进度播�
 ```javascript
 npm install progress-player --save
 ```
-### React版本兼容
+
+### React 版本兼容
 
 ```javascript
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
 ```
+
 ### 使用
 
 ```javascript
@@ -61,13 +63,14 @@ const marks = [
 
 Api
 
-| 参数          | 说明               |       类型       | 默认值 |
-| ------------- | ------------------ | :--------------: | :----: |
-| marks         | 见下表             |      object      |   无   |
-| width         | 宽                 | string or number | 800px  |
-| finishToStart | 结束时是否回到起点 |     Boolean      |  true  |
-| onPlay        | 播放时调用         |     function     |   无   |
-| onPause       | 停止时调用         |     function     |   无   |
+| 参数            | 说明               |       类型       | 默认值 |
+| --------------- | ------------------ | :--------------: | :----: |
+| marks           | 见下表             |      object      |   无   |
+| width           | 宽                 | string or number | 800px  |
+| finishToStart   | 结束时是否回到起点 |     Boolean      |  true  |
+| onPlay          | 播放时调用         |     function     |   无   |
+| onPause         | 停止时调用         |     function     |   无   |
+| distanceAverage | 是否平均分         |     boolean      | false  |
 
 marks
 
