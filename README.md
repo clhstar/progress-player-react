@@ -19,7 +19,7 @@ npm install progress-player --save
 
 ```javascript
 // 加载样式
-import "progress-player/dist/index.css";
+import "progress-player/dist/main.css";
 // 引入组件
 import { ProgressPlayer } from "progress-player";
 
@@ -71,6 +71,8 @@ Api
 | onPlay          | 播放时调用         |     function     |   无   |
 | onPause         | 停止时调用         |     function     |   无   |
 | distanceAverage | 是否平均分         |     boolean      | false  |
+| playIcon        | 播放图标           |   reactElement   |   无   |
+| pauseIcon       | 暂停图标           |   reactElement   |   无   |
 
 marks
 
