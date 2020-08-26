@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef, MouseEvent } from "react";
+import React, { useEffect, useState, useRef, MouseEvent, ReactElement, cloneElement } from "react";
 
-import playIcon from "./play.svg";
-import pauseIcon from "./pause.svg";
+import playIconSvg from "./play.svg";
+import pauseIconSvg from "./pause.svg";
 
 type marksConfig = {
   percent: number;
@@ -18,9 +18,21 @@ interface ProgressPlayer {
   marks: Array<marksConfig>;
   finishToStart?: boolean;
   distanceAverage?: boolean;
+  playIcon?: ReactElement;
+  pauseIcon?: ReactElement;
 }
 
-const ProgressPlayer: React.FC<ProgressPlayer> = ({ width, showPlayButton, marks, onPlay, onPause, finishToStart, distanceAverage }) => {
+const ProgressPlayer: React.FC<ProgressPlayer> = ({
+  width,
+  showPlayButton,
+  marks,
+  onPlay,
+  onPause,
+  finishToStart,
+  distanceAverage,
+  playIcon,
+  pauseIcon,
+}) => {
   const currentKey = useRef<number>(0);
   const timeTimeout = useRef<Array<NodeJS.Timeout>>([]);
   const wrapper = useRef<HTMLDivElement>(null);
@@ -217,23 +229,35 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({ width, showPlayButton, marks
       <div id="icon_box" className="progress_player_icon_box">
         {showPlayButton &&
           (playStatus ? (
-            <img
-              className="progress_player_icon_pause"
-              src={pauseIcon}
-              onClick={() => {
-                Pause();
-              }}
-              alt="pause"
-            />
+            <>
+              {pauseIcon ? (
+                cloneElement(pauseIcon, { onClick: () => Pause() })
+              ) : (
+                <img
+                  className="progress_player_icon_pause"
+                  src={pauseIconSvg}
+                  onClick={() => {
+                    Pause();
+                  }}
+                  alt="pause"
+                />
+              )}
+            </>
           ) : (
-            <img
-              className="progress_player_icon_play"
-              src={playIcon}
-              onClick={() => {
-                Play();
-              }}
-              alt="play"
-            />
+            <>
+              {playIcon ? (
+                cloneElement(playIcon, { onClick: () => Play() })
+              ) : (
+                <img
+                  className="progress_player_icon_play"
+                  src={playIconSvg}
+                  onClick={() => {
+                    Play();
+                  }}
+                  alt="play"
+                />
+              )}
+            </>
           ))}
       </div>
       <div ref={wrapper} className="progress_player_wrapper" onClick={(e) => onMouseMove(e, "click")}>

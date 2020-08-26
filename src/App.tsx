@@ -49,7 +49,7 @@ function App() {
           Learn React
         </a>
       </header>
-      <ProgressPlayer marks={marks} />
+      <ProgressPlayer marks={marks} pauseIcon={<img src={logo} style={{ width: 50 }} />} />
     </div>
   );
 }

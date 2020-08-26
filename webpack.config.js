@@ -7,20 +7,19 @@ module.exports = {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
     libraryTarget: "commonjs",
-   
   },
   externals: {
     react: {
-      commonjs: 'react',
-      commonjs2: 'react',
-      amd: 'react',
-      root: 'React',
+      commonjs: "react",
+      commonjs2: "react",
+      amd: "react",
+      root: "React",
     },
-    'react-dom': {
-      commonjs: 'react-dom',
-      commonjs2: 'react-dom',
-      amd: 'react-dom',
-      root: 'ReactDOM',
+    "react-dom": {
+      commonjs: "react-dom",
+      commonjs2: "react-dom",
+      amd: "react-dom",
+      root: "ReactDOM",
     },
   },
   mode: "production",
@@ -40,13 +39,13 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.svg$/,
-        loader:"url-loader",
+        test: /\.(png|woff|woff2|svg|eot|ttf)($|\?)/i,
+        use: "url-loader?limit=5000",
       },
     ],
   },
   plugins: [new CleanWebpackPlugin()],
   resolve: {
-    extensions: [".js", ".ts", ".tsx", ".json" ,".svg"],
+    extensions: [".js", ".ts", ".tsx", ".json", ".svg"],
   },
 };
