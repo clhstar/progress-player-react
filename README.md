@@ -27,7 +27,8 @@ const marks = [
   {
     percent: 0,
     label: "报警",
-    onSelect: () => {
+    onSelect: (e) => {
+      console.log(e);
       console.log("报警");
     },
     time: 2,
@@ -76,12 +77,12 @@ Api
 
 marks
 
-| 参数     | 说明           |   类型   |
-| -------- | -------------- | :------: |
-| percent  | 必须为`number` |  number  |
-| label    | 下标名称       |  string  |
-| time     | 时间(单位 s)   |  number  |
-| onSelect | 被选中时调用   | function |
+| 参数     | 说明           |        类型        |
+| -------- | -------------- | :----------------: |
+| percent  | 必须为`number` |       number       |
+| label    | 下标名称       |       string       |
+| time     | 时间(单位 s)   |       number       |
+| onSelect | 被选中时调用   | function:(e)=>void |
 
 ### 一些本地开发命令
 

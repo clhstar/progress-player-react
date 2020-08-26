@@ -8,7 +8,8 @@ function App() {
     {
       percent: 0,
       label: "报警",
-      onTrigger: () => {
+      onSelect: (e: any) => {
+        console.log(e);
         console.log("报警");
       },
       time: 2,
@@ -16,7 +17,7 @@ function App() {
     {
       percent: 10,
       label: "处理",
-      onTrigger: () => {
+      onSelect: (e: any) => {
         console.log("处理");
       },
       time: 2,
@@ -24,7 +25,7 @@ function App() {
     {
       percent: 60,
       label: "扑救",
-      onTrigger: () => {
+      onSelect: (e: any) => {
         console.log("扑救");
       },
       time: 4,
@@ -32,7 +33,7 @@ function App() {
     {
       percent: 100,
       label: "结束",
-      onTrigger: () => {
+      onSelect: (e: any) => {
         console.log("结束");
       },
       time: 3,

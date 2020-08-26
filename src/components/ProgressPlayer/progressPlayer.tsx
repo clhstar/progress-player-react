@@ -6,8 +6,9 @@ import pauseIconSvg from "./pause.svg";
 type marksConfig = {
   percent: number;
   label: string;
-  onSelect?: () => void;
+  onSelect?: (e: marksConfig) => void;
   time: number;
+  [key: string]: any;
 };
 
 interface ProgressPlayer {
@@ -196,7 +197,7 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
     changeSelectStyle(percent);
     for (let item of marks) {
       if (item.percent === percent) {
-        item.onSelect && item.onSelect();
+        typeof item.onSelect === "function" && item.onSelect(item);
         goToLabel(percent);
       }
     }
