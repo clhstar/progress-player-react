@@ -14,7 +14,10 @@ type marksConfig = {
 interface ProgressPlayer {
   onPlay?: () => void;
   onPause?: () => void;
+  onTrigger?: (e: marksConfig) => void;
   width?: number | string;
+  height?: number | string;
+  className?: string;
   showPlayButton?: boolean;
   marks: Array<marksConfig>;
   finishToStart?: boolean;
@@ -25,10 +28,13 @@ interface ProgressPlayer {
 
 const ProgressPlayer: React.FC<ProgressPlayer> = ({
   width,
+  height,
   showPlayButton,
   marks,
   onPlay,
   onPause,
+  onTrigger,
+  className,
   finishToStart,
   distanceAverage,
   playIcon,
@@ -52,18 +58,6 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
   }
 
   useEffect(() => {
-    let player_content = document.getElementById("player_content");
-    let icon_box = document.getElementById("icon_box");
-    if (player_content && wrapper.current && icon_box) {
-      if (typeof width === "number") {
-        player_content.style.width = width + "px";
-        wrapper.current.style.width = `calc(100% - ${icon_box.offsetWidth}px`;
-      } else if (typeof width === "string") {
-        player_content.style.width = width;
-        wrapper.current.style.width = `calc(100% - ${icon_box.offsetWidth}px`;
-      }
-    }
-    // console.log('playStatus', playStatus);
     slider.current && slider.current.addEventListener("mousedown", mouseDown);
     document.addEventListener("mouseup", mouseUp);
     return () => {
@@ -96,15 +90,16 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
           fill.current.style.transition = "";
           slider.current.style.transition = "";
         }
-        if (e.pageX > wrapper.current.offsetLeft + wrapper.current.offsetWidth) {
+        const wrapperLeft = wrapper.current.getBoundingClientRect().left;
+        if (e.pageX > wrapperLeft + wrapper.current.offsetWidth) {
           fill.current.style.width = slider.current.style.left = "100%";
-        } else if (e.pageX < wrapper.current.offsetLeft) {
+        } else if (e.pageX < wrapperLeft) {
           fill.current.style.width = slider.current.style.left = "0%";
         }
         for (let item of marks) {
           if (
-            e.pageX <= (item.percent * 0.01 + 0.05) * wrapper.current.offsetWidth + wrapper.current.offsetLeft &&
-            e.pageX >= (item.percent * 0.01 - 0.05) * wrapper.current.offsetWidth + wrapper.current.offsetLeft
+            e.pageX <= (item.percent * 0.01 + 0.05) * wrapper.current.offsetWidth + wrapperLeft &&
+            e.pageX >= (item.percent * 0.01 - 0.05) * wrapper.current.offsetWidth + wrapperLeft
           ) {
             if (currentKey.current == item.percent) return;
             goToLabel(item.percent);
@@ -127,7 +122,6 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
 
   useEffect(() => {
     return () => {
-      console.log("结束定时器");
       timeTimeout.current.map((item) => {
         clearTimeout(item);
       });
@@ -136,8 +130,7 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
   }, []);
 
   const Play = () => {
-    console.log("播放");
-    onPlay && onPlay();
+    typeof onPlay === "function" && onPlay();
     setPlayStatus(true);
     let currentTotalTimes = 0;
     clickLabel(currentKey.current);
@@ -164,8 +157,7 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
   };
 
   const Pause = () => {
-    console.log("暂停");
-    onPause && onPause();
+    typeof onPause === "function" && onPause();
     setPlayStatus(false);
     timeTimeout.current.map((item) => {
       clearTimeout(item);
@@ -198,6 +190,7 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
     for (let item of marks) {
       if (item.percent === percent) {
         typeof item.onSelect === "function" && item.onSelect(item);
+        typeof onTrigger === "function" && onTrigger(item);
         goToLabel(percent);
       }
     }
@@ -226,8 +219,8 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
     return list;
   };
   return (
-    <div className="progress_player_content" id="player_content">
-      <div id="icon_box" className="progress_player_icon_box">
+    <div className={`progress_player_content ${className || ""}`} style={{ height: height, width: width }} id="player_content">
+      <div id="progress_player_icon_box" className="progress_player_icon_box">
         {showPlayButton &&
           (playStatus ? (
             <>
@@ -261,10 +254,12 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
             </>
           ))}
       </div>
-      <div ref={wrapper} className="progress_player_wrapper" onClick={(e) => onMouseMove(e, "click")}>
-        <div ref={fill} className="progress_player_fill"></div>
-        <div ref={slider} className="progress_player_slider"></div>
-        <div className="progress_player_label_box">{renderLabel(marks)}</div>
+      <div className="progress_player_wrapper_box">
+        <div ref={wrapper} className="progress_player_wrapper" onClick={(e) => onMouseMove(e, "click")}>
+          <div ref={fill} className="progress_player_fill"></div>
+          <div ref={slider} className="progress_player_slider"></div>
+          <div className="progress_player_label_box">{renderLabel(marks)}</div>
+        </div>
       </div>
     </div>
   );
@@ -272,6 +267,7 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
 
 ProgressPlayer.defaultProps = {
   width: "800px",
+  height: 80,
   showPlayButton: true,
   finishToStart: true,
   distanceAverage: false,

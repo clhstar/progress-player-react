@@ -68,21 +68,26 @@ Api
 | --------------- | ------------------ | :--------------: | :----: |
 | marks           | 见下表             |      object      |   无   |
 | width           | 宽                 | string or number | 800px  |
+| height          | 高                 | string or number |  80px  |
+| className       | 类名               |      string      |   无   |
 | finishToStart   | 结束时是否回到起点 |     Boolean      |  true  |
 | onPlay          | 播放时调用         |     function     |   无   |
 | onPause         | 停止时调用         |     function     |   无   |
+| onTrigger       | 选中时的回调       |   function (e)   |   无   |
 | distanceAverage | 是否平均分         |     boolean      | false  |
 | playIcon        | 播放图标           |   reactElement   |   无   |
 | pauseIcon       | 暂停图标           |   reactElement   |   无   |
+| showPlayButton  | 是否显示播放按钮   |     boolean      |  true  |
 
 marks
 
-| 参数     | 说明           |        类型        |
-| -------- | -------------- | :----------------: |
-| percent  | 必须为`number` |       number       |
-| label    | 下标名称       |       string       |
-| time     | 时间(单位 s)   |       number       |
-| onSelect | 被选中时调用   | function:(e)=>void |
+| 参数         | 说明           |        类型        |
+| ------------ | -------------- | :----------------: |
+| percent      | 必须为`number` |       number       |
+| label        | 下标名称       |       string       |
+| time         | 时间(单位 s)   |       number       |
+| onSelect     | 被选中时调用   | function:(e)=>void |
+| [自定义名称] | 额外自定义属性 |         无         |
 
 ### 一些本地开发命令
 

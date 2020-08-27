@@ -1,6 +1,6 @@
 {
   "name": "progress-player",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "private": false,
   "author": "Liheng Chen",
   "main": "dist/main.js",
