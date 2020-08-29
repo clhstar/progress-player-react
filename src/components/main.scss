@@ -12,27 +12,19 @@
   user-select: none;
 }
 
-@keyframes wrapper {
-  from {
-    background: rgba(95, 95, 95, 0.15);
-  }
-  to {
-    background: rgba(95, 95, 95, 0.3);
-  }
-}
 .progress_player_wrapper_box {
   flex: 1;
-  padding: 0 30px;
+  padding: 0 40px 0 30px;
   height: 100%;
   display: flex;
   align-items: center;
 }
 .progress_player_wrapper {
   &:hover {
-    animation: wrapper 0.5s;
-    background: rgba(95, 95, 95, 0.3);
+    background-color: rgba(95, 95, 95, 0.3);
   }
-  background: rgba(95, 95, 95, 0.15);
+  transition: background-color 0.3s;
+  background-color: rgba(95, 95, 95, 0.15);
   position: relative;
   height: 6px;
   width: 100%;
@@ -56,7 +48,8 @@
     border: 2px solid #3188eb;
     background: #fff;
     left: 0;
-    transform: translateX(-50%);
+    top: 50%;
+    transform: translate(-50%, -50%);
     cursor: pointer;
   }
   .progress_player_label_box {
@@ -64,11 +57,11 @@
     width: 100%;
     top: 10px;
     .progress_player_select {
-      font-size: 16px;
+      font-size: 14px;
       color: #3188eb;
     }
     .progress_player_unselect {
-      font-size: 13px;
+      font-size: 12px;
     }
     span {
       position: absolute;
@@ -85,9 +78,9 @@
   justify-content: center;
   width: 80px;
   height: 100%;
-  cursor: pointer;
   .progress_player_icon_play,
   .progress_player_icon_pause {
+    cursor: pointer;
     width: 30px;
     height: 30px;
   }

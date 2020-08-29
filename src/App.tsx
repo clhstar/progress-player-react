@@ -8,34 +8,21 @@ function App() {
     {
       percent: 0,
       label: "报警",
-      onSelect: (e: any) => {
-        console.log(e);
-        console.log("报警");
-      },
       time: 2,
     },
     {
       percent: 10,
       label: "处理",
-      onSelect: (e: any) => {
-        console.log("处理");
-      },
       time: 2,
     },
     {
       percent: 60,
       label: "扑救",
-      onSelect: (e: any) => {
-        console.log("扑救");
-      },
       time: 4,
     },
     {
       percent: 100,
       label: "结束",
-      onSelect: (e: any) => {
-        console.log("结束");
-      },
       time: 3,
     },
   ];
@@ -50,7 +37,7 @@ function App() {
           Learn React
         </a>
       </header>
-      <ProgressPlayer marks={marks} pauseIcon={<img src={logo} style={{ width: 50 }} />} />
+      <ProgressPlayer marks={marks} />
     </div>
   );
 }

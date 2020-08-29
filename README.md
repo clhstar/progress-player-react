@@ -27,39 +27,31 @@ const marks = [
   {
     percent: 0,
     label: "报警",
-    onSelect: (e) => {
-      console.log(e);
-      console.log("报警");
-    },
     time: 2,
   },
   {
     percent: 30,
     label: "处理",
-    onSelect: () => {
-      console.log("处理");
-    },
     time: 0,
   },
   {
     percent: 60,
     label: "扑救",
-    onSelect: () => {
-      console.log("扑救");
-    },
     time: 4,
   },
   {
     percent: 100,
     label: "结束",
-    onSelect: () => {
-      console.log("结束");
-    },
     time: 3,
   },
 ];
 
-<ProgressPlayer marks={marks} />;
+<ProgressPlayer
+  marks={marks}
+  onTrigger={(e) => {
+    console.log(e);
+  }}
+/>;
 ```
 
 Api
@@ -68,7 +60,7 @@ Api
 | --------------- | ------------------ | :--------------: | :----: |
 | marks           | 见下表             |      object      |   无   |
 | width           | 宽                 | string or number | 800px  |
-| height          | 高                 | string or number |  80px  |
+| height          | 高                 | string or number |  65px  |
 | className       | 类名               |      string      |   无   |
 | finishToStart   | 结束时是否回到起点 |     Boolean      |  true  |
 | onPlay          | 播放时调用         |     function     |   无   |
@@ -81,13 +73,12 @@ Api
 
 marks
 
-| 参数         | 说明           |        类型        |
-| ------------ | -------------- | :----------------: |
-| percent      | 必须为`number` |       number       |
-| label        | 下标名称       |       string       |
-| time         | 时间(单位 s)   |       number       |
-| onSelect     | 被选中时调用   | function:(e)=>void |
-| [自定义名称] | 额外自定义属性 |         无         |
+| 参数         | 说明           |  类型  |
+| ------------ | -------------- | :----: |
+| percent      | 必须为`number` | number |
+| label        | 下标名称       | string |
+| time         | 时间(单位 s)   | number |
+| [自定义名称] | 额外自定义属性 |   无   |
 
 ### 一些本地开发命令
 

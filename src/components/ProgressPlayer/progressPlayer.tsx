@@ -6,7 +6,6 @@ import pauseIconSvg from "./pause.svg";
 type marksConfig = {
   percent: number;
   label: string;
-  onSelect?: (e: marksConfig) => void;
   time: number;
   [key: string]: any;
 };
@@ -14,7 +13,7 @@ type marksConfig = {
 interface ProgressPlayer {
   onPlay?: () => void;
   onPause?: () => void;
-  onTrigger?: (e: marksConfig) => void;
+  onTrigger?: (e: marksConfig | null) => void;
   width?: number | string;
   height?: number | string;
   className?: string;
@@ -102,10 +101,10 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
             e.pageX >= (item.percent * 0.01 - 0.05) * wrapper.current.offsetWidth + wrapperLeft
           ) {
             if (currentKey.current == item.percent) return;
-            goToLabel(item.percent);
-            changeSelectStyle(-1);
             playStatus && Pause();
             currentKey.current = item.percent;
+            clickLabel(item.percent);
+            // changeSelectStyle(-1);
           }
         }
         // else {
@@ -141,10 +140,10 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
           setTimeout(() => {
             let nextIndex = marks.indexOf(item) + 1;
             if (nextIndex > marks.length - 1) {
+              Pause();
               nextIndex = 0;
               finishToStart && goToLabel(marks[nextIndex].percent); //播放完是否回到起点
               currentKey.current = 0;
-              setPlayStatus(false);
               changeSelectStyle(-1);
             } else {
               currentKey.current = marks[nextIndex].percent;
@@ -189,7 +188,6 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
     changeSelectStyle(percent);
     for (let item of marks) {
       if (item.percent === percent) {
-        typeof item.onSelect === "function" && item.onSelect(item);
         typeof onTrigger === "function" && onTrigger(item);
         goToLabel(percent);
       }
@@ -205,9 +203,9 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
           id={`${item.percent}`}
           key={item.percent}
           onClick={(e) => {
+            playStatus && Pause();
             currentKey.current = item.percent;
             clickLabel(item.percent, e);
-            playStatus && Pause();
           }}
           style={{ left: `${item.percent}%` }}
         >
@@ -267,7 +265,7 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
 
 ProgressPlayer.defaultProps = {
   width: "800px",
-  height: 80,
+  height: 65,
   showPlayButton: true,
   finishToStart: true,
   distanceAverage: false,
