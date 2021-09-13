@@ -56,20 +56,22 @@ const marks = [
 
 Api
 
-| 参数            | 说明               |       类型       | 默认值 |
-| --------------- | ------------------ | :--------------: | :----: |
-| marks           | 见下表             |      object      |   无   |
-| width           | 宽                 | string or number | 800px  |
-| height          | 高                 | string or number |  65px  |
-| className       | 类名               |      string      |   无   |
-| finishToStart   | 结束时是否回到起点 |     Boolean      |  true  |
-| onPlay          | 播放时调用         |     function     |   无   |
-| onPause         | 停止时调用         |     function     |   无   |
-| onTrigger       | 选中时的回调       |   function (e)   |   无   |
-| distanceAverage | 是否平均分         |     boolean      | false  |
-| playIcon        | 播放图标           |   reactElement   |   无   |
-| pauseIcon       | 暂停图标           |   reactElement   |   无   |
-| showPlayButton  | 是否显示播放按钮   |     boolean      |  true  |
+| 参数            | 说明               |             类型              | 默认值 |
+| --------------- | ------------------ | :---------------------------: | :----: |
+| marks           | 见下表             |            object             |   无   |
+| width           | 宽                 |       string or number        | 800px  |
+| height          | 高                 |       string or number        |  65px  |
+| className       | 类名               |            string             |   无   |
+| finishToStart   | 结束时是否回到起点 |            Boolean            |  true  |
+| onPlay          | 播放时调用         |           function            |   无   |
+| onPause         | 停止时调用         |           function            |   无   |
+| onTrigger       | 选中时的回调       |         function (e)          |   无   |
+| distanceAverage | 是否平均分         |            boolean            | false  |
+| playIcon        | 播放图标           |         reactElement          |   无   |
+| pauseIcon       | 暂停图标           |         reactElement          |   无   |
+| showPlayButton  | 是否显示播放按钮   |            boolean            |  true  |
+| showLabel       | 是否显示 label     |            boolean            |  true  |
+| labelPosition   | label 位置         | 'left' or 'middle' or 'right' |  middle  |
 
 marks
 

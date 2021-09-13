@@ -3,6 +3,14 @@ import React, { useEffect, useState, useRef, MouseEvent, ReactElement, cloneElem
 import playIconSvg from "./play.svg";
 import pauseIconSvg from "./pause.svg";
 
+type labelPositionEnum = "left" | "middle" | "right";
+
+const labelPositionValueMap: Record<labelPositionEnum, string> = {
+  left: "translateX(-100%)",
+  middle: "translateX(-50%)",
+  right: "translateX(0%)",
+};
+
 type marksConfig = {
   percent: number;
   label: string;
@@ -23,6 +31,7 @@ interface ProgressPlayer {
   distanceAverage?: boolean;
   playIcon?: ReactElement;
   pauseIcon?: ReactElement;
+  labelPosition?: labelPositionEnum;
 }
 
 const ProgressPlayer: React.FC<ProgressPlayer> = ({
@@ -38,6 +47,7 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
   distanceAverage,
   playIcon,
   pauseIcon,
+  labelPosition,
 }) => {
   const currentKey = useRef<number>(0);
   const timeTimeout = useRef<Array<NodeJS.Timeout>>([]);
@@ -97,8 +107,8 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
         }
         for (let item of marks) {
           if (
-            e.pageX <= (item.percent * 0.01 + 0.05) * wrapper.current.offsetWidth + wrapperLeft &&
-            e.pageX >= (item.percent * 0.01 - 0.05) * wrapper.current.offsetWidth + wrapperLeft
+            e.pageX <= (item.percent * 0.01 + 0.01) * wrapper.current.offsetWidth + wrapperLeft &&
+            e.pageX >= (item.percent * 0.01 - 0.01) * wrapper.current.offsetWidth + wrapperLeft
           ) {
             if (currentKey.current == item.percent) return;
             playStatus && Pause();
@@ -197,8 +207,9 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
   const renderLabel = (marks: Array<marksConfig>) => {
     let list = [];
     for (let item of marks) {
+      if (item.showLabel === false) continue;
       let label = (
-        <span
+        <div
           className="progress_player_unselect"
           id={`${item.percent}`}
           key={item.percent}
@@ -207,10 +218,11 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
             currentKey.current = item.percent;
             clickLabel(item.percent, e);
           }}
-          style={{ left: `${item.percent}%` }}
+          style={{ left: `${item.percent}%`, transform: labelPosition && labelPositionValueMap[labelPosition] }}
         >
-          {item.label}
-        </span>
+          {/* <i className="progress_player_label_divider" /> */}
+          <div className="progress_player_label_item">{item.label}</div>
+        </div>
       );
       list.push(label);
     }
@@ -269,5 +281,6 @@ ProgressPlayer.defaultProps = {
   showPlayButton: true,
   finishToStart: true,
   distanceAverage: false,
+  labelPosition: "middle",
 };
 export default ProgressPlayer;

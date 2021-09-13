@@ -51,23 +51,32 @@
     top: 50%;
     transform: translate(-50%, -50%);
     cursor: pointer;
+    z-index: 1;
   }
   .progress_player_label_box {
     position: absolute;
     width: 100%;
-    top: 10px;
+    top: 6px;
     .progress_player_select {
+      position: absolute;
       font-size: 14px;
       color: #3188eb;
     }
     .progress_player_unselect {
-      font-size: 12px;
-    }
-    span {
       position: absolute;
-      white-space: nowrap;
+      font-size: 12px;
       color: rgba(0, 0, 0, 0.65);
+    }
+    .progress_player_label_divider {
+      position: absolute;
       transform: translateX(-50%);
+      width: 1px;
+      height: 20px;
+      background-color: #a7a7a7;
+    }
+    .progress_player_label_item {
+      padding: 5px 5px 0 5px;
+      white-space: nowrap;
     }
   }
 }
