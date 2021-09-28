@@ -19,9 +19,9 @@ npm install progress-player --save
 
 ```javascript
 // 加载样式
-import "progress-player/dist/main.css";
+import "progress-player-react/dist/main.css";
 // 引入组件
-import { ProgressPlayer } from "progress-player";
+import { ProgressPlayer } from "progress-player-react";
 
 const marks = [
   {
@@ -71,16 +71,17 @@ Api
 | pauseIcon       | 暂停图标           |         reactElement          |   无   |
 | showPlayButton  | 是否显示播放按钮   |            boolean            |  true  |
 | showLabel       | 是否显示 label     |            boolean            |  true  |
-| labelPosition   | label 位置         | 'left' or 'middle' or 'right' |  middle  |
+| labelPosition   | label 位置         | 'left' or 'middle' or 'right' | middle |
 
 marks
 
-| 参数         | 说明           |  类型  |
-| ------------ | -------------- | :----: |
-| percent      | 必须为`number` | number |
-| label        | 下标名称       | string |
-| time         | 时间(单位 s)   | number |
-| [自定义名称] | 额外自定义属性 |   无   |
+| 参数         | 说明                     |  类型   |
+| ------------ | ------------------------ | :-----: |
+| percent      | 必须为`number`           | number  |
+| label        | 下标名称                 | string  |
+| time         | 时间(单位 s)             | number  |
+| showLabel    | 是否显示 label 默认 true | boolean |
+| [自定义名称] | 额外自定义属性           |   无    |
 
 ### 一些本地开发命令
 

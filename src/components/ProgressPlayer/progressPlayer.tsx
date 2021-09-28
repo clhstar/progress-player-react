@@ -15,6 +15,7 @@ type marksConfig = {
   percent: number;
   label: string;
   time: number;
+  showLabel?: boolean;
   [key: string]: any;
 };
 
@@ -34,6 +35,42 @@ interface ProgressPlayer {
   labelPosition?: labelPositionEnum;
 }
 
+/** ProgressPlayer组件
+ * @example
+ * ```tsx
+ *  const marks = [
+ *   {
+ *     percent: 0,
+ *     label: "报警",
+ *     time: 1,
+ *   },
+ *   {
+ *     percent: 20,
+ *     label: "处理",
+ *     time: 1,
+ *     showLabel: false,
+ *   },
+ *   {
+ *     percent: 40,
+ *     label: "处理",
+ *     time: 1,
+ *   },
+ *   {
+ *     percent: 100,
+ *     label: "结束",
+ *     time: 1,
+ *   },
+ * ];
+ *
+ * <ProgressPlayer
+ *   labelPosition="middle"
+ *   distanceAverage
+ *   marks={marks}
+ *   finishToStart={false}
+ *   onTrigger={(config)=>{console.log("config",config)}}
+ * />
+ * ```
+ */
 const ProgressPlayer: React.FC<ProgressPlayer> = ({
   width,
   height,
@@ -230,9 +267,9 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
   };
   return (
     <div className={`progress_player_content ${className || ""}`} style={{ height: height, width: width }} id="player_content">
-      <div id="progress_player_icon_box" className="progress_player_icon_box">
-        {showPlayButton &&
-          (playStatus ? (
+      {showPlayButton && (
+        <div id="progress_player_icon_box" className="progress_player_icon_box">
+          {playStatus ? (
             <>
               {pauseIcon ? (
                 cloneElement(pauseIcon, { onClick: () => Pause() })
@@ -262,8 +299,9 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
                 />
               )}
             </>
-          ))}
-      </div>
+          )}
+        </div>
+      )}
       <div className="progress_player_wrapper_box">
         <div ref={wrapper} className="progress_player_wrapper" onClick={(e) => onMouseMove(e, "click")}>
           <div ref={fill} className="progress_player_fill"></div>
