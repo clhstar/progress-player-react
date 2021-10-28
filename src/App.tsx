@@ -9,27 +9,32 @@ function App() {
       percent: 0,
       label: "报警",
       time: 0.5,
+      value: 0,
     },
     {
       percent: 10,
       label: "处理",
       time: 0.5,
       showLabel: false,
+      value: 1,
     },
     {
       percent: 10,
       label: "处理",
       time: 0.5,
+      value: 2,
     },
     {
       percent: 60,
       label: "扑救",
       time: 0.5,
+      value: 3,
     },
     {
       percent: 100,
       label: "结束",
       time: 0.5,
+      value: 4,
     },
   ];
   return (
@@ -43,7 +48,7 @@ function App() {
           Learn React
         </a>
       </header>
-      <ProgressPlayer labelPosition="middle" distanceAverage marks={marks} />
+      <ProgressPlayer value={4} labelPosition="middle" distanceAverage marks={marks} />
     </div>
   );
 }

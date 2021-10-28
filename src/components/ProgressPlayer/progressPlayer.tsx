@@ -17,6 +17,7 @@ type marksConfig = {
   time: number;
   showLabel?: boolean;
   [key: string]: any;
+  value?: string | number;
 };
 
 interface ProgressPlayer {
@@ -33,6 +34,7 @@ interface ProgressPlayer {
   playIcon?: ReactElement;
   pauseIcon?: ReactElement;
   labelPosition?: labelPositionEnum;
+  value?: string | number;
 }
 
 /** ProgressPlayer组件
@@ -43,22 +45,26 @@ interface ProgressPlayer {
  *     percent: 0,
  *     label: "报警",
  *     time: 1,
+ *     value:0
  *   },
  *   {
  *     percent: 20,
  *     label: "处理",
  *     time: 1,
  *     showLabel: false,
+ *     value:1
  *   },
  *   {
  *     percent: 40,
  *     label: "处理",
  *     time: 1,
+ *     value:2
  *   },
  *   {
  *     percent: 100,
  *     label: "结束",
  *     time: 1,
+ *     value:3
  *   },
  * ];
  *
@@ -66,6 +72,7 @@ interface ProgressPlayer {
  *   labelPosition="middle"
  *   distanceAverage
  *   marks={marks}
+ *   value={1} //默认选中的值
  *   finishToStart={false}
  *   onTrigger={(config)=>{console.log("config",config)}}
  * />
@@ -85,6 +92,7 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
   playIcon,
   pauseIcon,
   labelPosition,
+  value,
 }) => {
   const currentKey = useRef<number>(0);
   const timeTimeout = useRef<Array<NodeJS.Timeout>>([]);
@@ -174,6 +182,13 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
       timeTimeout.current = [];
     };
   }, []);
+
+  useEffect(() => {
+    const item = marks.find((item) => item.value === value);
+    if (item) {
+      goToLabel(item.percent);
+    }
+  }, [value]);
 
   const Play = () => {
     typeof onPlay === "function" && onPlay();

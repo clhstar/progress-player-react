@@ -72,16 +72,18 @@ Api
 | showPlayButton  | 是否显示播放按钮   |            boolean            |  true  |
 | showLabel       | 是否显示 label     |            boolean            |  true  |
 | labelPosition   | label 位置         | 'left' or 'middle' or 'right' | middle |
+| value           | 默认选中值         |       string or number        |   无   |
 
 marks
 
-| 参数         | 说明                     |  类型   |
-| ------------ | ------------------------ | :-----: |
-| percent      | 必须为`number`           | number  |
-| label        | 下标名称                 | string  |
-| time         | 时间(单位 s)             | number  |
-| showLabel    | 是否显示 label 默认 true | boolean |
-| [自定义名称] | 额外自定义属性           |   无    |
+| 参数         | 说明                     |       类型       |
+| ------------ | ------------------------ | :--------------: |
+| percent      | 必须为`number`           |      number      |
+| label        | 下标名称                 |      string      |
+| time         | 时间(单位 s)             |      number      |
+| showLabel    | 是否显示 label 默认 true |     boolean      |
+| value        | value                    | string or number |
+| [自定义名称] | 额外自定义属性           |        无        |
 
 ### 一些本地开发命令
 

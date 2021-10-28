@@ -1,6 +1,6 @@
 {
   "name": "progress-player-react",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "private": false,
   "author": "Liheng Chen",
   "main": "dist/main.js",
