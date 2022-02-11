@@ -48,6 +48,7 @@ const marks = [
 
 <ProgressPlayer
   marks={marks}
+  showTooltip
   onTrigger={(e) => {
     console.log(e);
   }}
@@ -73,6 +74,7 @@ Api
 | showLabel       | 是否显示 label     |            boolean            |  true  |
 | labelPosition   | label 位置         | 'left' or 'middle' or 'right' | middle |
 | value           | 默认选中值         |       string or number        |   无   |
+| showTooltip     | 是否显示 tooltip   |            boolean            | false  |
 
 marks
 

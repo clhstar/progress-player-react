@@ -35,6 +35,7 @@ interface ProgressPlayer {
   pauseIcon?: ReactElement;
   labelPosition?: labelPositionEnum;
   value?: string | number;
+  showTooltip?: boolean;
 }
 
 /** ProgressPlayer组件
@@ -93,15 +94,18 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
   pauseIcon,
   labelPosition,
   value,
+  showTooltip,
 }) => {
   const currentKey = useRef<number>(0);
   const timeTimeout = useRef<Array<NodeJS.Timeout>>([]);
   const wrapper = useRef<HTMLDivElement>(null);
   const fill = useRef<HTMLDivElement>(null);
   const slider = useRef<HTMLDivElement>(null);
+  const tooltip = useRef<HTMLDivElement>(null);
   const drag = useRef(false);
+  const isMouseOver = useRef(false);
   const [playStatus, setPlayStatus] = useState(false);
-
+  const [tooltipText, setTooltipText] = useState("");
   if (distanceAverage) {
     let eachPercent = 100 / (marks.length - 1);
     let n = 0;
@@ -119,11 +123,35 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
       slider.current && slider.current.removeEventListener("mousedown", mouseDown);
     };
   }, []);
+
+  useEffect(() => {
+    if (showTooltip) {
+      wrapper.current && wrapper.current.addEventListener("mouseover", mouseOver);
+      wrapper.current && wrapper.current.addEventListener("mouseleave", mouseLeave);
+    }
+    return () => {
+      if (showTooltip) {
+        wrapper.current && wrapper.current.removeEventListener("mouseover", mouseOver);
+        wrapper.current && wrapper.current.removeEventListener("mouseleave", mouseLeave);
+      }
+    };
+  }, [showTooltip]);
+
   const mouseUp = () => {
     drag.current = false;
   };
   const mouseDown = () => {
     drag.current = true;
+  };
+
+  const mouseOver = () => {
+    isMouseOver.current = true;
+  };
+  const mouseLeave = () => {
+    isMouseOver.current = false;
+    if (tooltip.current) {
+      tooltip.current.style.display = "none";
+    }
   };
 
   useEffect(() => {
@@ -134,42 +162,48 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
   }, [playStatus]);
 
   const onMouseMove = (e: any, type?: string) => {
-    if (drag.current || type === "click") {
-      if (wrapper.current && fill.current && slider.current) {
+    if (drag.current || type === "click" || isMouseOver.current) {
+      if (wrapper.current && fill.current && slider.current && tooltip.current) {
         // console.log(e.pageX);
         if (type === "click") {
           fill.current.style.transition = "width 1s";
           slider.current.style.transition = "left 1s";
-        } else {
+        } else if (drag.current) {
           fill.current.style.transition = "";
           slider.current.style.transition = "";
         }
         const wrapperLeft = wrapper.current.getBoundingClientRect().left;
         if (e.pageX > wrapperLeft + wrapper.current.offsetWidth) {
-          fill.current.style.width = slider.current.style.left = "100%";
+          if (drag.current) {
+            fill.current.style.width = slider.current.style.left = "100%";
+          }
         } else if (e.pageX < wrapperLeft) {
-          fill.current.style.width = slider.current.style.left = "0%";
+          if (drag.current) {
+            fill.current.style.width = slider.current.style.left = "0%";
+          }
         }
-        for (let item of marks) {
+
+        for (let i = 0; i < marks.length; i++) {
+          let leftBuffer = marks[i - 1] ? ((marks[i].percent - marks[i - 1].percent) / 2) * 0.01 : 0;
+          let rightBuffer = marks[i + 1] ? ((marks[i + 1].percent - marks[i].percent) / 2) * 0.01 : 0;
           if (
-            e.pageX <= (item.percent * 0.01 + 0.01) * wrapper.current.offsetWidth + wrapperLeft &&
-            e.pageX >= (item.percent * 0.01 - 0.01) * wrapper.current.offsetWidth + wrapperLeft
+            e.pageX <= (marks[i].percent * 0.01 + rightBuffer) * wrapper.current.offsetWidth + wrapperLeft &&
+            e.pageX >= (marks[i].percent * 0.01 - leftBuffer) * wrapper.current.offsetWidth + wrapperLeft
           ) {
-            if (currentKey.current == item.percent) return;
-            playStatus && Pause();
-            currentKey.current = item.percent;
-            clickLabel(item.percent);
+            if (drag.current || type === "click") {
+              if (currentKey.current == marks[i].percent) return;
+              playStatus && Pause();
+              currentKey.current = marks[i].percent;
+              clickLabel(marks[i].percent);
+            }
+            if (isMouseOver.current) {
+              setTooltipText(marks[i].label);
+              tooltip.current.style.display = "block";
+              tooltip.current.style.left = e.pageX - wrapperLeft + "px";
+            }
             // changeSelectStyle(-1);
           }
         }
-        // else {
-        //   slider.current.style.left =
-        //     e.pageX -
-        //     wrapper.current.offsetLeft -
-        //     slider.current.offsetWidth / 2 +
-        //     'px';
-        //   fill.current.style.width = e.pageX - wrapper.current.offsetLeft + 'px';
-        // }
       }
     }
   };
@@ -236,7 +270,7 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
 
   const changeSelectStyle = (current: number) => {
     for (let item of marks) {
-      let currentDom = document.getElementById(`${item.percent}`);
+      let currentDom = document.getElementById(`progress_player_label-${item.percent}`);
       if (item.percent == current) {
         currentDom && (currentDom.className = "progress_player_select");
       } else {
@@ -263,8 +297,8 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
       let label = (
         <div
           className="progress_player_unselect"
-          id={`${item.percent}`}
-          key={item.percent}
+          id={`progress_player_label-${item.percent}`}
+          key={`progress_player_label-${item.percent}`}
           onClick={(e) => {
             playStatus && Pause();
             currentKey.current = item.percent;
@@ -322,6 +356,9 @@ const ProgressPlayer: React.FC<ProgressPlayer> = ({
           <div ref={fill} className="progress_player_fill"></div>
           <div ref={slider} className="progress_player_slider"></div>
           <div className="progress_player_label_box">{renderLabel(marks)}</div>
+          <div ref={tooltip} className="progress_player_tooltip_box">
+            {tooltipText}
+          </div>
         </div>
       </div>
     </div>
@@ -335,5 +372,6 @@ ProgressPlayer.defaultProps = {
   finishToStart: true,
   distanceAverage: false,
   labelPosition: "middle",
+  showTooltip: false,
 };
 export default ProgressPlayer;
